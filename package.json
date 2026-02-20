@@ -1,0 +1,25 @@
+{
+  "name": "startup-validation-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "setup": "npm install",
+    "dev:feasibility": "npm run dev -w apps/feasibility",
+    "dev:style-search": "npm run dev -w apps/style-search",
+    "dev": "concurrently \"npm run dev:feasibility\" \"npm run dev:style-search\"",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "vitest run",
+    "seed": "npm run seed -w packages/db",
+    "run:both": "npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

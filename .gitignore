@@ -1,0 +1,9 @@
+node_modules
+.next
+coverage
+dist
+.env*
+apps/*/node_modules
+apps/*/.next
+packages/*/node_modules
+parcel-feasibility

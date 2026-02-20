@@ -1,0 +1,4 @@
+{
+  "generatedAt": "2026-02-20T23:06:05.095Z",
+  "notes": "Seed data is embedded in @repo/shared and loaded in-memory by @repo/db for fast MVP iteration."
+}
