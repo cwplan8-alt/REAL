@@ -1,6 +1,6 @@
-import { makeEvent } from "@repo/analytics";
-import { db } from "@repo/db";
-import { sessionCookieName } from "@repo/shared";
+import { makeEvent } from "@/lib/analytics";
+import { db } from "@/lib/db";
+import { sessionCookieName } from "@/lib/domain";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

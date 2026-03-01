@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { classifyStyleConfidence, filterListings, listings } from "@repo/shared";
+import { classifyStyleConfidence, filterListings, listings } from "@/lib/domain";
 import { track, usePageView } from "@/lib/client";
 
 export default function SearchPage() {

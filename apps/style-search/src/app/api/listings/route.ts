@@ -1,5 +1,5 @@
-import { db } from "@repo/db";
-import { filterListings } from "@repo/shared";
+import { db } from "@/lib/db";
+import { filterListings } from "@/lib/domain";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

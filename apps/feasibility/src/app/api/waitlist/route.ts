@@ -1,5 +1,5 @@
-import { makeEvent } from "@repo/analytics";
-import { db } from "@repo/db";
+import { makeEvent } from "@/lib/analytics";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -25,3 +25,4 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true, lead });
 }
+

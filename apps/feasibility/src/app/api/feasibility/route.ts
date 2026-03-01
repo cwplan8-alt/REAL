@@ -1,5 +1,5 @@
-import { db } from "@repo/db";
-import { computeEnvelope } from "@repo/shared";
+import { db } from "@/lib/db";
+import { computeEnvelope } from "@/lib/domain";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -14,3 +14,4 @@ export async function POST(request: Request) {
   const envelope = computeEnvelope(parcel);
   return NextResponse.json({ parcel, envelope });
 }
+

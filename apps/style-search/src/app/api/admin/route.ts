@@ -1,5 +1,5 @@
-import { db } from "@repo/db";
-import { computeMetrics } from "@repo/shared";
+import { db } from "@/lib/db";
+import { computeMetrics } from "@/lib/domain";
 import { NextResponse } from "next/server";
 
 export async function GET() {

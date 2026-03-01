@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { db } from "@repo/db";
-import { DISCLAIMER, computeEnvelope } from "@repo/shared";
+import { db } from "@/lib/db";
+import { DISCLAIMER, computeEnvelope } from "@/lib/domain";
 
 export default async function ReportPage({ params }: { params: Promise<{ query: string }> }) {
   const { query } = await params;

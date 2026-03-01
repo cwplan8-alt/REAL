@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { DISCLAIMER } from "@repo/shared";
+import { DISCLAIMER } from "@/lib/domain";
 import { usePageView, track } from "@/lib/client";
 
 type Result = {
@@ -111,3 +111,4 @@ export default function AnalyzePage() {
     </div>
   );
 }
+

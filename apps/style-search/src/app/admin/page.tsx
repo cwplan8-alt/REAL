@@ -1,5 +1,5 @@
-import { db } from "@repo/db";
-import { computeMetrics } from "@repo/shared";
+import { db } from "@/lib/db";
+import { computeMetrics } from "@/lib/domain";
 
 export default function AdminPage() {
   const events = db.getEvents("B");

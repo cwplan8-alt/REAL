@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { listings } from "@repo/shared";
+import { listings } from "@/lib/domain";
 import FeedbackButton from "./style-feedback";
 
 export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
