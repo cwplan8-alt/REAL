@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
 import { computeMetrics } from "@/lib/domain";
 
-export default function AdminPage() {
-  const events = db.getEvents("B");
-  const leads = db.getLeads("B");
+export default async function AdminPage() {
+  const events = await db.getEvents("B");
+  const leads = await db.getLeads("B");
   const metrics = computeMetrics(events);
 
   return (
