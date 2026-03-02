@@ -1,6 +1,8 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import type { AnalyticsEvent } from "./analytics";
 import { parcels } from "./domain";
+
+const redis = Redis.fromEnv();
 
 type WaitlistLead = {
   name: string;
@@ -13,22 +15,22 @@ type WaitlistLead = {
 
 export const db = {
   async insertEvent(event: AnalyticsEvent) {
-    await kv.lpush("feasibility:events", event);
+    await redis.lpush("feasibility:events", event);
     return event;
   },
   async getEvents(_app_id?: "A"): Promise<AnalyticsEvent[]> {
-    return (await kv.lrange<AnalyticsEvent>("feasibility:events", 0, -1)) ?? [];
+    return (await redis.lrange<AnalyticsEvent>("feasibility:events", 0, -1)) ?? [];
   },
   async insertLead(lead: WaitlistLead) {
-    await kv.lpush("feasibility:leads", lead);
+    await redis.lpush("feasibility:leads", lead);
     return lead;
   },
   async getLeads(_app_id?: "A"): Promise<WaitlistLead[]> {
-    return (await kv.lrange<WaitlistLead>("feasibility:leads", 0, -1)) ?? [];
+    return (await redis.lrange<WaitlistLead>("feasibility:leads", 0, -1)) ?? [];
   },
   async upsertUser(email: string, app_id: "A") {
     const id = email.toLowerCase();
-    await kv.set(`feasibility:user:${id}`, { email, app_id });
+    await redis.set(`feasibility:user:${id}`, { email, app_id });
     return { id, email, app_id };
   },
   findParcel(query: string) {
