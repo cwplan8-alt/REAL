@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const lead = db.insertLead({
+  const lead = await db.insertLead({
     app_id: "B",
     name: body.name,
     email: body.email,
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     createdAt: new Date().toISOString(),
   });
 
-  db.insertEvent(
+  await db.insertEvent(
     makeEvent({
       app_id: "B",
       event: "waitlist_joined",

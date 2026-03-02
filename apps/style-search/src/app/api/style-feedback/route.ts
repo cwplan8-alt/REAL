@@ -15,6 +15,6 @@ export async function POST(request: Request) {
     },
   });
 
-  db.insertEvent(event);
+  await db.insertEvent(event);
   return NextResponse.json({ ok: true });
 }

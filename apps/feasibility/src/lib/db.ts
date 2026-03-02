@@ -1,3 +1,4 @@
+import { kv } from "@vercel/kv";
 import type { AnalyticsEvent } from "./analytics";
 import { parcels } from "./domain";
 
@@ -10,48 +11,31 @@ type WaitlistLead = {
   createdAt: string;
 };
 
-type Store = {
-  events: AnalyticsEvent[];
-  leads: WaitlistLead[];
-  users: Map<string, { email: string; app_id: "A" }>;
-};
-
-const globalForStore = globalThis as unknown as { __FEASIBILITY_DB__?: Store };
-
-function getStore(): Store {
-  if (!globalForStore.__FEASIBILITY_DB__) {
-    globalForStore.__FEASIBILITY_DB__ = {
-      events: [],
-      leads: [],
-      users: new Map(),
-    };
-  }
-  return globalForStore.__FEASIBILITY_DB__;
-}
-
 export const db = {
-  insertEvent(event: AnalyticsEvent) {
-    getStore().events.push(event);
+  async insertEvent(event: AnalyticsEvent) {
+    await kv.lpush("feasibility:events", event);
     return event;
   },
-  getEvents(_app_id?: "A") {
-    return getStore().events;
+  async getEvents(_app_id?: "A"): Promise<AnalyticsEvent[]> {
+    return (await kv.lrange<AnalyticsEvent>("feasibility:events", 0, -1)) ?? [];
   },
-  insertLead(lead: WaitlistLead) {
-    getStore().leads.push(lead);
+  async insertLead(lead: WaitlistLead) {
+    await kv.lpush("feasibility:leads", lead);
     return lead;
   },
-  getLeads(_app_id?: "A") {
-    return getStore().leads;
+  async getLeads(_app_id?: "A"): Promise<WaitlistLead[]> {
+    return (await kv.lrange<WaitlistLead>("feasibility:leads", 0, -1)) ?? [];
   },
-  upsertUser(email: string, app_id: "A") {
+  async upsertUser(email: string, app_id: "A") {
     const id = email.toLowerCase();
-    getStore().users.set(id, { email, app_id });
+    await kv.set(`feasibility:user:${id}`, { email, app_id });
     return { id, email, app_id };
   },
   findParcel(query: string) {
     return parcels.find(
-      (p) => p.apn.toLowerCase() === query.toLowerCase() || p.address.toLowerCase().includes(query.toLowerCase()),
+      (p) =>
+        p.apn.toLowerCase() === query.toLowerCase() ||
+        p.address.toLowerCase().includes(query.toLowerCase()),
     );
   },
 };

@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const user = db.upsertUser(body.email, "A");
+  const user = await db.upsertUser(body.email, "A");
 
-  db.insertEvent(
+  await db.insertEvent(
     makeEvent({
       app_id: "A",
       event: "contact_requested",
@@ -21,4 +21,3 @@ export async function POST(request: Request) {
   response.cookies.set(sessionCookieName("A"), user.id, { httpOnly: false, path: "/" });
   return response;
 }
-

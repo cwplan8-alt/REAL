@@ -1,3 +1,4 @@
+import { kv } from "@vercel/kv";
 import type { AnalyticsEvent } from "./analytics";
 import { listings } from "./domain";
 
@@ -10,43 +11,24 @@ type WaitlistLead = {
   createdAt: string;
 };
 
-type Store = {
-  events: AnalyticsEvent[];
-  leads: WaitlistLead[];
-  users: Map<string, { email: string; app_id: "B" }>;
-};
-
-const globalForStore = globalThis as unknown as { __STYLE_DB__?: Store };
-
-function getStore(): Store {
-  if (!globalForStore.__STYLE_DB__) {
-    globalForStore.__STYLE_DB__ = {
-      events: [],
-      leads: [],
-      users: new Map(),
-    };
-  }
-  return globalForStore.__STYLE_DB__;
-}
-
 export const db = {
-  insertEvent(event: AnalyticsEvent) {
-    getStore().events.push(event);
+  async insertEvent(event: AnalyticsEvent) {
+    await kv.lpush("style-search:events", event);
     return event;
   },
-  getEvents(_app_id?: "B") {
-    return getStore().events;
+  async getEvents(_app_id?: "B"): Promise<AnalyticsEvent[]> {
+    return (await kv.lrange<AnalyticsEvent>("style-search:events", 0, -1)) ?? [];
   },
-  insertLead(lead: WaitlistLead) {
-    getStore().leads.push(lead);
+  async insertLead(lead: WaitlistLead) {
+    await kv.lpush("style-search:leads", lead);
     return lead;
   },
-  getLeads(_app_id?: "B") {
-    return getStore().leads;
+  async getLeads(_app_id?: "B"): Promise<WaitlistLead[]> {
+    return (await kv.lrange<WaitlistLead>("style-search:leads", 0, -1)) ?? [];
   },
-  upsertUser(email: string, app_id: "B") {
+  async upsertUser(email: string, app_id: "B") {
     const id = email.toLowerCase();
-    getStore().users.set(id, { email, app_id });
+    await kv.set(`style-search:user:${id}`, { email, app_id });
     return { id, email, app_id };
   },
   getListings() {

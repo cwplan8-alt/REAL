@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const user = db.upsertUser(body.email, "B");
+  const user = await db.upsertUser(body.email, "B");
 
-  db.insertEvent(
+  await db.insertEvent(
     makeEvent({
       app_id: "B",
       event: "contact_requested",
