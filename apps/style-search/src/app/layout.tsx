@@ -14,10 +14,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
             <a className="font-semibold" href="/">Style Search MVP</a>
             <nav className="flex gap-4 text-sm">
+              <a href="/classify">Classify</a>
               <a href="/search">Search</a>
               <a href="/pricing">Pricing</a>
               <a href="/admin">Admin</a>
-              <a href="/auth">Auth</a>
+              
             </nav>
           </div>
         </header>
